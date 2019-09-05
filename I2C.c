@@ -124,6 +124,9 @@ bool I2C_WriteByte(uint8_t address, uint8_t reg, uint8_t data) {
 
 		I2C_RawStop();
 	}
+	else {
+		return (RETURN_BUS_BUSY);
+	}
 
 	return(RETURN_OK);
 }
@@ -137,6 +140,9 @@ bool I2C_WriteBytes(uint8_t address, uint8_t reg, uint8_t data[], uint8_t size) 
 				return(RETURN_FAILED);
 			}
 		}
+	}
+	else {
+		return (RETURN_BUS_BUSY);
 	}
 
 	return(RETURN_OK);
@@ -167,6 +173,9 @@ bool I2C_ReadByte(uint8_t address, uint8_t reg, uint8_t *data) {
 		}
 
 		I2C_RawStop();
+	}
+	else {
+		return (RETURN_BUS_BUSY);
 	}
 
 	return(RETURN_OK);
@@ -201,6 +210,9 @@ bool I2C_ReadBytes(uint8_t address, uint8_t reg, uint8_t *data, uint8_t size) {
 		}
 
 		I2C_RawStop();
+	}
+	else {
+		return (RETURN_BUS_BUSY);
 	}
 
 	return(RETURN_OK);
@@ -292,8 +304,8 @@ bool I2C_RawRead(uint8_t ACK, uint8_t *data)							// ACK=1 send ACK ; ACK=0 sen
 		}
 
 		*data = TWI0.MDATA;
-		if	(ACK == 1)	{TWI0.MCTRLB &= ~(1 << TWI_ACKACT_bp);}		// si ACK=1 mise à 0 ACKACT => action send ack
-		else			{TWI0.MCTRLB |= (1 << TWI_ACKACT_bp);	}	// sinon (ACK=0) => mise à 1 ACKACT => nack préparé pour actionstop
+		if	(ACK == 1)	{TWI0.MCTRLB &= ~(1 << TWI_ACKACT_bp);}		// si ACK=1 mise Ã  0 ACKACT => action send ack
+		else			{TWI0.MCTRLB |= (1 << TWI_ACKACT_bp);	}	// sinon (ACK=0) => mise Ã  1 ACKACT => nack prÃ©parÃ© pour actionstop
 
 //		if (I2C_ARBLOST) {
 //			// Arbitration lost - keep retrying.
